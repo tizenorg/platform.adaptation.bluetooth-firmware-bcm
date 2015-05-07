@@ -1,0 +1,25 @@
+Source: bluetooth-firmware-bcm
+Section: devel
+Priority: optional
+Maintainer: DoHyun Pyun <dh79.pyun@samsung.com>, ChanYeol Park <chanyeol.park@samsung.com>, Girish A J <girish.joshi@samsung.com>, InJun Yang <injun.yang@samsung.com>, Jaekyun Lee <jkyun.lee@samsung.com>
+Uploaders: Sunil Behera <sunil.behera@samsung.com>, Syam Sidhardhan <s.syam@samsung.com>
+Build-Depends: debhelper (>= 5), libglib2.0-dev, libvconf-dev
+Standards-Version: 3.7.2
+Homepage: N/A
+
+Package: bluetooth-firmware-bcm
+Architecture: any
+Section: utils
+Depends: ${shlibs:Depends}, ${misc:Depends}, bluetooth-tools
+Description: firmware and tools
+ firmware and tools
+
+Package: bluetooth-firmware-bcm-dbg
+Section: debug
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, bluetooth-firmware-bcm (= ${Source-Version})
+Description: Tools for bluetooth-firmware-bcm (unstripped)
+ The package contains detached debugging symbols for the binary packages
+ produced by the bt-firmware-43xx soruce.
+
+

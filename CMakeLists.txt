@@ -1,0 +1,15 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.6)
+
+INCLUDE(FindPkgConfig)
+pkg_check_modules(package REQUIRED glib-2.0 vconf)
+
+FOREACH(flag ${package_CFLAGS})
+	SET(EXTRA_CFLAGS "${EXTRA_CFLAGS} ${flag}")
+ENDFOREACH(flag)
+
+SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${EXTRA_CFLAGS}")
+
+ADD_SUBDIRECTORY(set-address)
+ADD_SUBDIRECTORY(tools)
+ADD_SUBDIRECTORY(firmware)
+ADD_SUBDIRECTORY(scripts)
