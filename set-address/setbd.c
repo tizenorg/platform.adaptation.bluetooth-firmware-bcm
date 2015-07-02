@@ -293,32 +293,6 @@ int make_bt_address(gboolean overwrite_bt_address)
 #endif
 }
 
-void vconf_cb(keynode_t *key, void * data)
-{
-	char * key_string=NULL;
-
-	switch(vconf_keynode_get_type(key))
-	{
-		case VCONF_TYPE_STRING:
-			key_string=vconf_keynode_get_str(key);
-			if(strcmp(key_string,"")!=0)
-			{
-				APP_DEBUG("Vconf Call back trial\n");
-				/* This case means TAPI writes IMEI correctly */
-				/* Because we write BT address which comes from IMEI again  */
-				make_bt_address(TRUE);
-				g_main_loop_quit(loop);
-			}
-
-			break;
-
-
-		default:
-			break;
-	}
-	return;
-}
-
 gboolean exit_cb(gpointer data)
 {
 
@@ -340,12 +314,8 @@ int main()
 		exit(0);
 
 #ifdef IMEI_BASED_RAND_FEATURE
-	vconf_notify_key_changed(VCONFKEY_TELEPHONY_IMEI,vconf_cb,NULL);
-
 	g_timeout_add_seconds(10,exit_cb,NULL);
 	g_main_loop_run(loop);
-
-	vconf_ignore_key_changed(VCONFKEY_TELEPHONY_IMEI,vconf_cb);
 #endif
 
 	return 0;
