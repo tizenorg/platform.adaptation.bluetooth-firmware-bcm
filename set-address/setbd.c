@@ -196,65 +196,6 @@ int readBDaddrTI(void){
 	return 0;
 }
 #endif
-int make_bt_address_from_tapi_imei(unsigned char * bt_address)
-{
-	char * temp=NULL;
-	int tapi_state=0;
-	int ret=-1;
-	int i=0;
-
-	if(bt_address==NULL)
-		return -EBADR;
-
-	ret=vconf_get_int(VCONFKEY_TELEPHONY_TAPI_STATE,&tapi_state);
-	if(tapi_state==VCONFKEY_TELEPHONY_TAPI_STATE_READY && ret==0){
-		temp=vconf_get_str(VCONFKEY_TELEPHONY_IMEI);
-		APP_DEBUG("TAPI_IMEI: %s\n",temp);
-
-#ifdef IMEI_BASED_RAND_FEATURE
-		if(strcmp(temp,DEFAULT_IMEI)==0){
-			APP_DEBUG("TAPI_IMEI is defulat IMEI\n");
-			is_default_imei=TRUE;
-			return -ENODATA;
-		}
-#else
-		APP_DEBUG("Temporarily we skip reading TAPI_IMEI\n");
-		APP_DEBUG("  due to TAPI IMEI API is deprecated\n");
-		is_default_imei=TRUE;
-		return -ENODATA;
-#endif
-
-		if(strcmp(temp,"")==0)
-			return -ENODATA;
-
-		if(strlen(temp)<14)
-			return -ENODATA;
-
-		memcpy(bt_address, BD_PREFIX, 5);
-
-		for(i=5 ;i<14;i++){
-			if(i==7){
-				bt_address[i]='\n';
-				continue;
-			}
-
-			bt_address[i]=temp[i];
-		}
-
-	}else{
-		APP_DEBUG("TAPI_IMEI Reading Error\n");
-		return -ENODATA;
-	}
-
-	APP_DEBUG("Bluetooth Address\n");
-	for(i=0;i<BD_ADDR_LEN;i++)
-		APP_DEBUG("%c",bt_address[i]);
-
-	APP_DEBUG("\n");
-
-	return 0;
-
-}
 
 int make_bt_address(gboolean overwrite_bt_address)
 {
@@ -277,7 +218,7 @@ int make_bt_address(gboolean overwrite_bt_address)
 
 		if(overwrite_bt_address)
 		{
-			APP_DEBUG("Overwrite BT address because TAPI write correct IMEI.\n");
+			APP_DEBUG("Overwrite BT address\n");
 		}
 
 		fd=open(BD_ADDR_FILE, O_RDWR | O_CREAT | O_TRUNC | O_SYNC, 0644);
@@ -287,10 +228,8 @@ int make_bt_address(gboolean overwrite_bt_address)
 			APP_DEBUG("Can't open address file\n");
 			return 0;
 		}
-		success_make_bt_address_from_imei=make_bt_address_from_tapi_imei(txt);
 
-		if(success_make_bt_address_from_imei<0)
-			makeRandomBD(txt);
+		makeRandomBD(txt);
 
 		ret = write(fd, txt, BD_ADDR_LEN);
 		lseek(fd, 0, SEEK_SET);
