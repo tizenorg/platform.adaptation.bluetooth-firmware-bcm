@@ -5,7 +5,7 @@
 #
 
 # Device down
-/usr/sbin/hciconfig hci0 down
+/usr/bin/hciconfig hci0 down
 
 # OMAP4
 REVISION_NUM=`grep Revision /proc/cpuinfo | awk "{print \\$3}"`
