@@ -20,7 +20,7 @@ fi
 killall hciattach
 
 # Turn off Bluetooth Chip
-rfkill block bluetooth
+/usr/sbin/rfkill block bluetooth
 
 #if [ -e /sys/class/gpio/gpio17/value ]
 #then

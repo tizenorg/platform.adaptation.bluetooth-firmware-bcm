@@ -31,7 +31,7 @@ then
 fi
 
 # Trun-on Bluetooth Chip
-rfkill unblock bluetooth
+/usr/sbin/rfkill unblock bluetooth
 
 echo "Check for Bluetooth device status"
 if (/usr/bin/hciconfig | grep hci); then
@@ -52,6 +52,6 @@ else
 		echo "HCIATTACH success"
 	else
 		echo "HCIATTACH failed"
-		rfkill block bluetooth
+		/usr/sbin/rfkill block bluetooth
 	fi
 fi
