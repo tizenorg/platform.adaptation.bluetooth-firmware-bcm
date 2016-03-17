@@ -69,10 +69,9 @@ static gboolean is_default_imei=FALSE;
 #if defined(BT_CHIP_CSR) || defined(BT_CHIP_BROADCOM)
 int addremoveBD(char* path, char* pskey){
 	FILE *fd, *new;
-	int ret;
 	char cmp[READ_BD_FILE_MAX];
 	char *result;
-
+	int ret;
 	fd = fopen(path, "r");
 	if(NULL == fd){
 		APP_DBG("Error open psr file\r\n");
@@ -87,6 +86,8 @@ int addremoveBD(char* path, char* pskey){
 	}
 
 	ret = fputs(pskey,new);
+	if (ret < 0)
+		return -1;
 
 	while(1){
 		result = fgets(cmp, READ_BD_FILE_MAX, fd);
@@ -202,10 +203,11 @@ int make_bt_address(gboolean overwrite_bt_address)
 #if defined(BT_CHIP_CSR) || defined(BT_CHIP_BROADCOM)
 
 	int fd;
-	int i;
 	unsigned char txt[BD_ADDR_LEN];
 	unsigned char nap[4+1], uap[2+1], lap[6+1];
+#if defined(BT_CHIP_CSR)
 	char pskey[PSKEY_LEN+3];
+#endif
 	int ret;
 
 	fd=open(BD_ADDR_FILE, O_RDONLY | O_SYNC);
