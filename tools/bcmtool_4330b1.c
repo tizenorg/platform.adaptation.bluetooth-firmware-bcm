@@ -223,7 +223,6 @@ UINT8 SendCommand(UINT16 opcode, UINT8 param_len, UINT8 *p_param_buf)
 {
     UINT8 pbuf[255] = {0,};
     UINT8 i=0;
-    INT8 ret = 0;
     
     pbuf[0] = 0x1;
     pbuf[1] = (UINT8)(opcode);
@@ -239,10 +238,7 @@ UINT8 SendCommand(UINT16 opcode, UINT8 param_len, UINT8 *p_param_buf)
 
     dump(pbuf, param_len+4);
 
-    ret = write(fd, pbuf, param_len+4);
-    if (ret != 0)
-        return -1;
-
+    write(fd, pbuf, param_len+4);
     return 0;
 }
 
@@ -353,7 +349,6 @@ UINT8 DownloadPatchram( char *patchram1 )
 
     INT32 FileSize=0;
     INT32 SentSize=0;
-    INT8 ret = 0;
     
     DEBUG1( "\n%s\n", patchram1);
 
@@ -390,13 +385,9 @@ UINT8 DownloadPatchram( char *patchram1 )
 
         len = buffer[3];
 
-	 ret = fread(&buffer[4],sizeof(UINT8),len, pFile);
-	 if (ret != 0)
-	     return -1;
+        fread(&buffer[4],sizeof(UINT8),len, pFile);
 
-        ret  = write(fd, buffer, len + 4);
-	 if (ret != 0)
-	     return -1;
+        write(fd, buffer, len + 4);
 
         /* dispaly progress*/
         SentSize += (len + 3);
@@ -790,14 +781,14 @@ int main(int argc, char *argv[])
             {
                 char text[BTUI_MAX_STRING_LENGTH_PER_LINE];
 
-                if ((fgets(text, BTUI_MAX_STRING_LENGTH_PER_LINE, pFile)) != NULL)
-	                sscanf(text,"%02x%02x",&bdaddr[0],&bdaddr[1]);
+                fgets(text, BTUI_MAX_STRING_LENGTH_PER_LINE, pFile);
+                sscanf(text,"%02x%02x",&bdaddr[0],&bdaddr[1]);
 
-                if ((fgets(text, BTUI_MAX_STRING_LENGTH_PER_LINE, pFile)) != NULL)
-	                sscanf(text,"%02x",&bdaddr[2]);
+                fgets(text, BTUI_MAX_STRING_LENGTH_PER_LINE, pFile);
+                sscanf(text,"%02x",&bdaddr[2]);
 
-                if ((fgets(text, BTUI_MAX_STRING_LENGTH_PER_LINE, pFile)) != NULL)
-	                sscanf(text,"%02x%02x%02x",&bdaddr[3],&bdaddr[4],&bdaddr[5]);
+                fgets(text, BTUI_MAX_STRING_LENGTH_PER_LINE, pFile);
+                sscanf(text,"%02x%02x%02x",&bdaddr[3],&bdaddr[4],&bdaddr[5]);
 
                 fprintf(stderr,"Writing B/D Address = %02X:%02X:%02X:%02X:%02X:%02X\n",bdaddr[0],bdaddr[1],bdaddr[2],bdaddr[3],bdaddr[4],bdaddr[5]);
 
