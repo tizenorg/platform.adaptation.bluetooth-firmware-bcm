@@ -16,10 +16,17 @@ BuildRequires:  cmake
 
 %package exynos3250
 Summary:    bcm firmware and tools for exynos3250
-Group:      TO_BE/FILLED
+Group:      Hardware Support/Handset
 
 %description exynos3250
 bcm firmware and tools for exynos3250
+
+%package artik
+Summary:    bcm firmware and tools for artik
+Group:      Hardware Support/Handset
+
+%description artik
+bcm firmware and tools for artik
 
 %prep
 %setup -q
@@ -57,5 +64,19 @@ cat %{_builddir}/%{name}-%{version}/LICENSE.Broadcom >> %{buildroot}/usr/share/l
 %{_prefix}/etc/bluetooth/BCM4343A1_001.002.009.0022.0050_Murata_Type-1FR.hcd
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-dev-end.sh
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-dev-start-exynos3250.sh
+%attr(755,-,-) %{_prefix}/etc/bluetooth/bt-set-addr.sh
+/usr/share/license/%{name}
+
+%post artik
+rm -rf %{_prefix}/etc/bluetooth/bt-dev-start.sh
+ln -s %{_prefix}/etc/bluetooth/bt-dev-start-artik.sh %{_prefix}/etc/bluetooth/bt-dev-start.sh
+
+%files artik
+%defattr(644,root,root,-)
+%{_bindir}/brcm_patchram_plus
+%{_bindir}/setbd
+%{_prefix}/etc/bluetooth/BCM4354_003.001.012.0353.0745_Samsung_Artik_ORC.hcd
+%attr(755,-,-) %{_prefix}/etc/bluetooth/bt-dev-end.sh
+%attr(755,-,-) %{_prefix}/etc/bluetooth/bt-dev-start-artik.sh
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-set-addr.sh
 /usr/share/license/%{name}
