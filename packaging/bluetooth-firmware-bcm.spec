@@ -7,6 +7,7 @@ License:    Apache
 # NOTE: Source name does not match package name.  This should be
 # resolved in the future, by I don't have that power. - Ryan Ware
 Source0:    %{name}-%{version}.tar.gz
+Provides:   bluetooth-scripts
 
 BuildRequires:  pkgconfig(vconf)
 BuildRequires:  cmake
@@ -17,6 +18,7 @@ BuildRequires:  cmake
 %package exynos3250
 Summary:    bcm firmware and tools for exynos3250
 Group:      Hardware Support/Handset
+Provides:   bluetooth-scripts
 
 %description exynos3250
 bcm firmware and tools for exynos3250
@@ -24,6 +26,7 @@ bcm firmware and tools for exynos3250
 %package artik
 Summary:    bcm firmware and tools for artik
 Group:      Hardware Support/Handset
+Provides:   bluetooth-scripts
 
 %description artik
 bcm firmware and tools for artik
