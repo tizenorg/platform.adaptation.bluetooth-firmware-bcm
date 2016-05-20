@@ -245,7 +245,9 @@ UINT8 SendCommand(UINT16 opcode, UINT8 param_len, UINT8 * p_param_buf)
 
 	dump(pbuf, param_len + 4);
 
-	write(fd, pbuf, param_len + 4);
+	if (write(fd, pbuf, param_len + 4) < 0)
+		DEBUG0("Fail to write pbuf");
+
 	return 0;
 }
 
@@ -346,8 +348,11 @@ UINT8 DownloadPatchram(char *patchram1)
 	UINT32 len;
 	char prm[128] = { 0, };
 	FILE *pFile = NULL;
+	size_t size;
 
+#if 0
 	INT32 FileSize = 0;
+#endif
 	INT32 SentSize = 0;
 
 	DEBUG1("\n%s\n", patchram1);
@@ -371,7 +376,10 @@ UINT8 DownloadPatchram(char *patchram1)
 			errno);
 		exit_err(1);
 	}
+
+#if 0
 	FileSize = filesize(prm);
+#endif
 
 	SendCommand(HCI_BRCM_DOWNLOAD_MINI_DRV, 0, NULL);
 	read_event(fd, buffer);
@@ -383,9 +391,11 @@ UINT8 DownloadPatchram(char *patchram1)
 
 		len = buffer[3];
 
-		fread(&buffer[4], sizeof(UINT8), len, pFile);
+		size = fread(&buffer[4], sizeof(UINT8), len, pFile);
+		fprintf(stderr, "fread size: %d\n", size);
 
-		write(fd, buffer, len + 4);
+		size = write(fd, buffer, len + 4);
+		fprintf(stderr, "write size: %d\n", size);
 
 		/* dispaly progress */
 		SentSize += (len + 3);
@@ -893,19 +903,24 @@ int main(int argc, char *argv[])
 			}
 
 			if (pFile) {
+//				char *ptr;
+
 				char text[BTUI_MAX_STRING_LENGTH_PER_LINE];
 
-				fgets(text, BTUI_MAX_STRING_LENGTH_PER_LINE,
-				      pFile);
+				if (!fgets(text, BTUI_MAX_STRING_LENGTH_PER_LINE, pFile))
+					fprintf(stderr, "fail to fgets");
+
 				sscanf(text, "%02x%02x", &bdaddr[0],
 				       &bdaddr[1]);
 
-				fgets(text, BTUI_MAX_STRING_LENGTH_PER_LINE,
-				      pFile);
+				if (!fgets(text, BTUI_MAX_STRING_LENGTH_PER_LINE, pFile))
+					fprintf(stderr, "fail to fgets");
+
 				sscanf(text, "%02x", &bdaddr[2]);
 
-				fgets(text, BTUI_MAX_STRING_LENGTH_PER_LINE,
-				      pFile);
+				if (!fgets(text, BTUI_MAX_STRING_LENGTH_PER_LINE, pFile))
+					fprintf(stderr, "fail to fgets");
+
 				sscanf(text, "%02x%02x%02x", &bdaddr[3],
 				       &bdaddr[4], &bdaddr[5]);
 

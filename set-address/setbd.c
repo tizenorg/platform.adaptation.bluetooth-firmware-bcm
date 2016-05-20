@@ -87,6 +87,7 @@ int addremoveBD(char* path, char* pskey){
 	}
 
 	ret = fputs(pskey,new);
+	APP_DBG("fputs ret: %d", ret);
 
 	while(1){
 		result = fgets(cmp, READ_BD_FILE_MAX, fd);
@@ -106,6 +107,7 @@ int addremoveBD(char* path, char* pskey){
 		}
 
 		ret = fputs(cmp,new);
+		APP_DBG("fputs ret: %d", ret);
 	}
 
 	return 0;
@@ -202,10 +204,12 @@ int make_bt_address(gboolean overwrite_bt_address)
 #if defined(BT_CHIP_CSR) || defined(BT_CHIP_BROADCOM)
 
 	int fd;
-	int i;
 	unsigned char txt[BD_ADDR_LEN];
 	unsigned char nap[4+1], uap[2+1], lap[6+1];
+#if defined(BT_CHIP_CSR)
+	int i;
 	char pskey[PSKEY_LEN+3];
+#endif
 	int ret;
 
 	fd=open(BD_ADDR_FILE, O_RDONLY | O_SYNC);
