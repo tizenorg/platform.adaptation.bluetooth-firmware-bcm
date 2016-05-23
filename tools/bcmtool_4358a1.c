@@ -388,11 +388,11 @@ UINT8 DownloadPatchram( char *patchram1 )
 
         len = buffer[3];
 
-		size = fread(&buffer[4], sizeof(UINT8), len, pFile);
-		fprintf(stderr, "fread size: %d\n", size);
+	size = fread(&buffer[4], sizeof(UINT8), len, pFile);
+	fprintf(stderr, "fread size: %d\n", (int) size);
 
-		size = write(fd, buffer, len + 4);
-		fprintf(stderr, "write size: %d\n", size);
+	size = write(fd, buffer, len + 4);
+	fprintf(stderr, "write size: %d\n", (int) size);
 
         /* dispaly progress*/
         SentSize += (len + 3);
