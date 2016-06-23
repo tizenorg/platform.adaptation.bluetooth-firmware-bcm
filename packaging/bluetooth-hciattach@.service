@@ -1,0 +1,13 @@
+[Unit]
+Description=hciattach service requested by %I
+Requires=bluetooth-hci-device.service
+After=bluetooth-hci-device.service
+
+[Service]
+Type=oneshot
+ExecStartPre=-/bin/mkdir -p /run/bluetooth/
+ExecStart=/bin/touch /run/bluetooth/%I
+ExecStop=/bin/rm /run/bluetooth/%I
+RemainAfterExit=yes
+StandardOutput=journal+console
+StandardError=inherit

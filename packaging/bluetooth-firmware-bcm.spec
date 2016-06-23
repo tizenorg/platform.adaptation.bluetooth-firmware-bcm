@@ -7,6 +7,8 @@ License:    Apache
 # NOTE: Source name does not match package name.  This should be
 # resolved in the future, by I don't have that power. - Ryan Ware
 Source0:    %{name}-%{version}.tar.gz
+Source1:    bluetooth-hciattach@.service
+Source2:    bluetooth-hci-device.service
 Provides:   bluetooth-scripts
 
 BuildRequires:  pkgconfig(vconf)
@@ -47,6 +49,9 @@ mkdir -p %{buildroot}/usr/share/license
 cp LICENSE.APLv2 %{buildroot}/usr/share/license/%{name}
 cat %{_builddir}/%{name}-%{version}/LICENSE.Broadcom >> %{buildroot}/usr/share/license/%{name}
 
+install -D -m 0644 %SOURCE1 %{buildroot}%{_libdir}/systemd/system/bluetooth-hciattach@.service
+install -D -m 0644 %SOURCE2 %{buildroot}%{_libdir}/systemd/system/bluetooth-hci-device.service
+
 %files
 %defattr(-,root,root,-)
 #%{_bindir}/bcmtool_4330b1
@@ -58,6 +63,8 @@ cat %{_builddir}/%{name}-%{version}/LICENSE.Broadcom >> %{buildroot}/usr/share/l
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-dev-end.sh
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-dev-start.sh
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-set-addr.sh
+%exclude %{_libdir}/systemd/system/bluetooth-hciattach@.service
+%exclude %{_libdir}/systemd/system/bluetooth-hci-device.service
 %manifest %{name}.manifest
 
 %post exynos3250
@@ -74,6 +81,8 @@ ln -s %{_prefix}/etc/bluetooth/bt-dev-start-exynos3250.sh %{_prefix}/etc/bluetoo
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-dev-start-exynos3250.sh
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-set-addr.sh
 /usr/share/license/%{name}
+%{_libdir}/systemd/system/bluetooth-hciattach@.service
+%{_libdir}/systemd/system/bluetooth-hci-device.service
 %manifest %{name}.manifest
 
 %post artik
@@ -89,4 +98,6 @@ ln -s %{_prefix}/etc/bluetooth/bt-dev-start-artik.sh %{_prefix}/etc/bluetooth/bt
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-dev-start-artik.sh
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-set-addr.sh
 /usr/share/license/%{name}
+%{_libdir}/systemd/system/bluetooth-hciattach@.service
+%{_libdir}/systemd/system/bluetooth-hci-device.service
 %manifest %{name}.manifest

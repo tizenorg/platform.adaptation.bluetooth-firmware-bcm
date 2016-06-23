@@ -1,0 +1,11 @@
+[Unit]
+Description=hciattach service for Broadcom BT/FM requested
+StopWhenUnneeded=yes
+
+[Service]
+Type=oneshot
+ExecStart=/usr/etc/bluetooth/bt-dev-start.sh
+ExecStop=/usr/etc/bluetooth/bt-dev-end.sh
+RemainAfterExit=yes
+StandardOutput=journal+console
+StandardError=inherit
