@@ -58,6 +58,7 @@ cat %{_builddir}/%{name}-%{version}/LICENSE.Broadcom >> %{buildroot}/usr/share/l
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-dev-end.sh
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-dev-start.sh
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-set-addr.sh
+%manifest %{name}.manifest
 
 %post exynos3250
 rm -rf %{_prefix}/etc/bluetooth/bt-dev-start.sh
@@ -73,6 +74,7 @@ ln -s %{_prefix}/etc/bluetooth/bt-dev-start-exynos3250.sh %{_prefix}/etc/bluetoo
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-dev-start-exynos3250.sh
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-set-addr.sh
 /usr/share/license/%{name}
+%manifest %{name}.manifest
 
 %post artik
 rm -rf %{_prefix}/etc/bluetooth/bt-dev-start.sh
@@ -87,3 +89,4 @@ ln -s %{_prefix}/etc/bluetooth/bt-dev-start-artik.sh %{_prefix}/etc/bluetooth/bt
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-dev-start-artik.sh
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-set-addr.sh
 /usr/share/license/%{name}
+%manifest %{name}.manifest
