@@ -59,6 +59,10 @@ cat %{_builddir}/%{name}-%{version}/LICENSE.Broadcom >> %{buildroot}/usr/share/l
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-dev-start.sh
 %attr(755,-,-) %{_prefix}/etc/bluetooth/bt-set-addr.sh
 
+%post exynos3250
+rm -rf %{_prefix}/etc/bluetooth/bt-dev-start.sh
+ln -s %{_prefix}/etc/bluetooth/bt-dev-start-exynos3250.sh %{_prefix}/etc/bluetooth/bt-dev-start.sh
+
 %files exynos3250
 %defattr(-,root,root,-)
 %{_bindir}/bcmtool_4343w
