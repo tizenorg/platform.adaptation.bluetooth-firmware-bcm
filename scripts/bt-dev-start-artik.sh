@@ -1,4 +1,5 @@
 #!/bin/sh
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
 
 # Script for registering Broadcom UART BT device
 BT_UART_DEVICE=/dev/ttySAC3

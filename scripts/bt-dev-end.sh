@@ -1,4 +1,5 @@
 #!/bin/sh
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
 
 #
 # Script for stopping Broadcom UART Bluetooth stack
