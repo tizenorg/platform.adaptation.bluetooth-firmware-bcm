@@ -4,6 +4,7 @@ StopWhenUnneeded=yes
 
 [Service]
 Type=oneshot
+SmackProcessLabel=System
 ExecStart=/usr/etc/bluetooth/bt-dev-start.sh
 ExecStop=/usr/etc/bluetooth/bt-dev-end.sh
 RemainAfterExit=yes

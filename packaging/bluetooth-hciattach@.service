@@ -5,6 +5,7 @@ After=bluetooth-hci-device.service
 
 [Service]
 Type=oneshot
+SmackProcessLabel=System
 ExecStartPre=-/bin/mkdir -p /run/bluetooth/
 ExecStart=/bin/touch /run/bluetooth/%I
 ExecStop=/bin/rm /run/bluetooth/%I
